@@ -10,8 +10,9 @@ import java.util.List;
 public class PlanetCrudService {
 
     public static String create(String id, String name) {
-        Planet planetFound;
         Planet planet = new Planet();
+        String addedPlanetId;
+
         planet.setId(id);
         planet.setName(name);
 
@@ -19,20 +20,28 @@ public class PlanetCrudService {
             Transaction transaction = session.beginTransaction();
             session.persist(planet);
             transaction.commit();
-            planetFound = session.createQuery("from Planet where name = \"" + name + "\" and id =  \"" + id + "\"", Planet.class).uniqueResult();
+            addedPlanetId = session.createQuery("from Planet where name = \""
+                            + name
+                            + "\" and id =  \""
+                            + id
+                            + "\"", Planet.class)
+                    .uniqueResult()
+                    .getId();
         }
-        return planetFound.getId();
+        return addedPlanetId;
     }
 
     public static String getById(String id) {
         Planet planetFound;
+        String planetFoundName;
         try (Session session = HibernateUtil.getInstance().getSessionFactory().openSession()) {
             planetFound = session.get(Planet.class, id);
         }
         if (planetFound == null) {
             throw new IllegalArgumentException("There is no such ID in the table");
         }
-        return planetFound.getName();
+        planetFoundName = planetFound.getName();
+        return planetFoundName;
     }
 
     public static void setName(String id, String name) {

@@ -30,6 +30,10 @@ public class Client {
 
     @Override
     public String toString() {
-        return "Client(id=" + this.getId() + ", name=" + this.getName() + ")\n";
+        return "Client(id="
+                + this.getId()
+                + ", name="
+                + this.getName()
+                + ")\n";
     }
 }

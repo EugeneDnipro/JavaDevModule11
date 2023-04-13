@@ -10,28 +10,37 @@ import java.util.List;
 public class ClientCrudService {
 
     public static long create(String name) {
-        Client clientFound;
         Client client = new Client();
+        long addedClientId;
+
         client.setName(name);
 
         try (Session session = HibernateUtil.getInstance().getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             session.persist(client);
             transaction.commit();
-            clientFound = session.createQuery("from Client where name = \"" + name + "\" and id = (select max(id) from Client where name = \"" + name + "\")", Client.class).uniqueResult();
+            addedClientId = session.createQuery("from Client where name = \""
+                            + name
+                            + "\" and id = (select max(id) from Client where name = \""
+                            + name
+                            + "\")", Client.class)
+                    .uniqueResult()
+                    .getId();
         }
-        return clientFound.getId();
+        return addedClientId;
     }
 
     public static String getById(long id) {
         Client clientFound;
+        String clientFoundName;
         try (Session session = HibernateUtil.getInstance().getSessionFactory().openSession()) {
             clientFound = session.get(Client.class, id);
         }
         if (clientFound == null) {
             throw new IllegalArgumentException("There is no such ID in the table");
         }
-        return clientFound.getName();
+        clientFoundName = clientFound.getName();
+        return clientFoundName;
     }
 
     public static void setName(long id, String name) {

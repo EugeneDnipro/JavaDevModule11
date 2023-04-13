@@ -32,6 +32,10 @@ public class Planet {
 
     @Override
     public String toString() {
-        return "Planet(id=" + this.getId() + ", name=" + this.getName() + ")\n";
+        return "Planet(id="
+                + this.getId()
+                + ", name="
+                + this.getName()
+                + ")\n";
     }
 }

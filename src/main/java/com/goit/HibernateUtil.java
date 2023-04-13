@@ -28,8 +28,4 @@ public class HibernateUtil {
     public static HibernateUtil getInstance() {
         return INSTANCE;
     }
-
-    public void close() {
-        sessionFactory.close();
-    }
 }
